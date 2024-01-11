@@ -14,10 +14,10 @@
       <h2>Login to Support</h2>
       <form id="login-form">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="login_email" name="email" required>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit">Login</button>
+        <input type="password" id="login_password" name="password" required>
+        <button type="submit" id="login">Login</button>
       </form>
     </section>
     <section class="signup-section">
@@ -29,5 +29,54 @@
   <footer>
     <p>&copy; 2024 Deforestation Awareness</p>
   </footer>
+
+  <!-- Firebase scripts -->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAkoJluLwIBs9j8CCpJpd0MrRwXdHPihPw",
+      authDomain: "sample4-dcbaa.firebaseapp.com",
+      projectId: "sample4-dcbaa",
+      storageBucket: "sample4-dcbaa.appspot.com",
+      messagingSenderId: "733318079412",
+      appId: "1:733318079412:web:a4d9eba418ca7cf748c8e1",
+      measurementId: "G-HB5NP950WN"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    // Add event listener for the login form
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const email = document.getElementById('login_email').value;
+      const password = document.getElementById('login_password').value;
+
+      // Firebase authentication
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Handle successful login
+          console.log('Successfully logged in:', userCredential.user);
+          alert('Successfully logged in!');
+          // Clear the form
+          loginForm.reset();
+        })
+        .catch((error) => {
+          // Handle errors, e.g., display an error message to the user
+          console.error('Login failed:', error.message);
+          alert('Login failed. Incorrect email or password.');
+          // Refresh the page
+          location.reload();
+        });
+    });
+  </script>
 </body>
 </html>
